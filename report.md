@@ -79,7 +79,6 @@ void loop(){
   }
 }
 ```
-
 Server: <br />
 ```javascript
 var express = require('express'); // web server application
@@ -138,7 +137,6 @@ io.on('connect', function(socket) {
   });
 });
 ```
-
 Client: <br />
 ```javascript
 var COLOUR =  '#505050';  // This is the drawing color
