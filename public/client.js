@@ -42,5 +42,4 @@ var firstMessage=true;    // What the first message, to start on the first value
     
     $('select[name="colorpicker"]').on('change', function() {
       COLOUR = $('select[name="colorpicker"]').val();
-      alert(COLOUR);
     });
