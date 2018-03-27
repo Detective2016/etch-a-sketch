@@ -141,61 +141,52 @@ io.on('connect', function(socket) {
 
 Client: <br />
 ```javascript
-var express = require('express'); // web server application
-var app = express(); // webapp
-var http = require('http').Server(app); // connects http library to server
-var io = require('socket.io')(http); // connect websocket library to server
-var serverPort = 8000;
-var serialPort = require('serialport'); // serial library
-var readLine = serialPort.parsers.Readline; // read serial data as lines
+var COLOUR =  '#505050';  // This is the drawing color
+var radius = 3;           // Constant radio for the line
+var socket = io();        // websocket to the server
+var previousPosition=[0,0]; // previous position to draw a line from
+var ctx = Sketch.create({
+    container: document.getElementById( 'container' ), //reference drawing canvas
+    autoclear: false, // making sure it stays
+    retina: 'auto',
+}); //Creating the drawing context
+var firstMessage=true;    // What the first message, to start on the first value
 
-//---------------------- WEBAPP SERVER SETUP ---------------------------------//
-// use express to create the simple webapp
-app.use(express.static('public')); // find pages in public directory
+    ctx.setup = function() { console.log( 'setup' );} // Setup all variables
+    ctx.keydown= function() { if ( ctx.keys.C ) ctx.clear();} // handeling keydowns
 
+    socket.on('reset', function() { // on a 'reset' message clean and reste firstMessage
+      firstMessage=true;
+      ctx.clear();
+    });
 
-// start the server and say what port it is on
-http.listen(serverPort, function() {
-  console.log('listening on *:%s', serverPort);
-});
-//----------------------------------------------------------------------------//
+    socket.on('new-pos', function(newPosition) { // handling new sensor values
 
+      //TODO: Map the incoming 10-bit numbers to the height and width of the screen.
+      // See https://github.com/soulwire/sketch.js/wiki/API for sketch references
+      newPosition[0] = map(newPosition[0], 0, 1023, 0, ctx.width*.6);
+      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.height*.6);
 
-//---------------------- SERIAL COMMUNICATION --------------------------------//
-// start the serial port connection and read on newlines
-const serial = new serialPort('/dev/ttyUSB0', {
- baudRate:115200
-
-});
-const parser = new readLine({
-  delimiter: '\r\n'
-});
-
-// Read data that is available on the serial port and send it to the websocket
-serial.pipe(parser);
-parser.on('data', function(data) { // on data from the arduino
-  if(data=='rst'){  // if its the 'rst' string call reset
-    io.emit('reset');
-  }else{ // any other data we try to forward by spliting it
-    var transmitData = [data.split(',')[0],data.split(',')[1]];
-    io.emit('new-pos', transmitData);
-  }
-});
-//----------------------------------------------------------------------------//
-
-
-//---------------------- WEBSOCKET COMMUNICATION -----------------------------//
-// this is the websocket event handler and say if someone connects
-// as long as someone is connected, listen for messages
-io.on('connect', function(socket) {
-  console.log('a user connected');
-  io.emit('reset'); // call reset to make sure the website is clean
-
-// if you get the 'disconnect' message, say the user disconnected
-  io.on('disconnect', function() {
-    console.log('user disconnected');
-  });
-});
+      if(firstMessage){ // if its the first message store that value as previous
+        firstMessage=false;
+        previousPosition=newPosition;
+      }else{ // any other message we use to draw.
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.fillStyle = ctx.strokeStyle = COLOUR;
+        ctx.lineWidth = radius;
+        ctx.beginPath();  //begin a adrawing
+        ctx.moveTo( previousPosition[0], previousPosition[1] ); // from
+        ctx.lineTo( newPosition[0],  newPosition[1]); // to
+        ctx.stroke(); // and only draw a stroke
+        previousPosition=newPosition; // update to the new position.
+       }
+    });
+    
+    $('select[name="colorpicker"]').on('change', function() {
+      COLOUR = $('select[name="colorpicker"]').val();
+      alert(COLOUR);
+    });
 ```
 Styles: <br />
 ```css
@@ -206,8 +197,8 @@ html, body {
 }
 
 #container {
-  width: 1000px;
-  height: 700px;
+  width: 1200px;
+  height: 600px;
   border: 2px solid blue;
 }
 ```
