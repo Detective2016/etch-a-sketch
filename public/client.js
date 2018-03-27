@@ -2,12 +2,13 @@ var COLOUR =  '#505050';  // This is the drawing color
 var radius = 3;           // Constant radio for the line
 var socket = io();        // websocket to the server
 var previousPosition=[0,0]; // previous position to draw a line from
-var ctx = Sketch.create(); //Creating the drawing context
+var ctx = Sketch.create({
+    container: document.getElementById( 'container' ), //reference drawing canvas
+    autoclear: false, // making sure it stays
+    retina: 'auto',
+}); //Creating the drawing context
 var firstMessage=true;    // What the first message, to start on the first value
 
-    ctx.container = document.getElementById( 'container' ); //reference drawing canvas
-    ctx.autoclear= false; // making sure it stays
-    ctx.retina='auto';
     ctx.setup = function() { console.log( 'setup' );} // Setup all variables
     ctx.keydown= function() { if ( ctx.keys.C ) ctx.clear();} // handeling keydowns
 
@@ -42,4 +43,4 @@ var firstMessage=true;    // What the first message, to start on the first value
     $('select[name="colorpicker"]').on('change', function() {
       COLOUR = $('select[name="colorpicker"]').val();
       alert(COLOUR);
-    })
+    });
