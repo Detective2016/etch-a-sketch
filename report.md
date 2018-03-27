@@ -197,7 +197,7 @@ io.on('connect', function(socket) {
   });
 });
 ```
-
+Styles: <br />
 ```css
 /* Styles go here */
 
