@@ -242,7 +242,7 @@ html, body {
 
 ## Part C. Make it yours
 1. Upload video of your Etch-a-Sketch in action, being used by someone else in the class! <br />
-To Be Added <br />
+https://youtu.be/RwVpx3PQynw <br />
 
 ### References
 https://github.com/tkrotoff/jquery-simplecolorpicker
