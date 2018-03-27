@@ -22,7 +22,7 @@ var firstMessage=true;    // What the first message, to start on the first value
       //TODO: Map the incoming 10-bit numbers to the height and width of the screen.
       // See https://github.com/soulwire/sketch.js/wiki/API for sketch references
       newPosition[0] = map(newPosition[0], 0, 1023, 0, ctx.width*.6);
-      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.width*.6);
+      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.height*.6);
 
       if(firstMessage){ // if its the first message store that value as previous
         firstMessage=false;
