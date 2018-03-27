@@ -26,7 +26,7 @@ The Arduino needs to do the following in order to be fully functional with the s
 ..* add the condition such that when the button is pressed, a string of "rst" is sent <br />
 ..* if any of the potentiometers' values changed, send a string of x and y delimited by a comma <br />
 4. What range of output X & Y values do you need? Is it better to map the values from the inputs to the outputs in the Arduino code, the Node code or Client code? Why? <br />
-The X and Y values need to be mapped to the container borders using styles and client code. It is easier to see and test the changes since the client code passes these values to the html for display. <br />
+The X and Y values need to be mapped to the container borders using styles and client code. It is easier to see and test the changes since the client code passes these values to the html for display. Additionally, since there are limits to what the potentiometers can rotate, I've used that as a reference when setting the range of the outputs. <br />
 5. How often do you need to be sending data from the Arduino? <br />
 As often as there's a change in the x or y values, or if there's a clear signal (when the button is pressed). <br />
 6. Include a copy of the Arduino code, and a copy of your Server and client side code. <br />
@@ -164,8 +164,8 @@ var firstMessage=true;    // What the first message, to start on the first value
 
       //TODO: Map the incoming 10-bit numbers to the height and width of the screen.
       // See https://github.com/soulwire/sketch.js/wiki/API for sketch references
-      newPosition[0] = map(newPosition[0], 0, 1023, 0, ctx.width*.6);
-      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.height*.6);
+      newPosition[0] = map(newPosition[0], 0, 1023, 0, ctx.width);
+      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.height);
 
       if(firstMessage){ // if its the first message store that value as previous
         firstMessage=false;
@@ -185,7 +185,6 @@ var firstMessage=true;    // What the first message, to start on the first value
     
     $('select[name="colorpicker"]').on('change', function() {
       COLOUR = $('select[name="colorpicker"]').val();
-      alert(COLOUR);
     });
 ```
 Styles: <br />
