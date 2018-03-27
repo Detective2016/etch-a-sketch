@@ -10,7 +10,9 @@ ctx.stroke(); // and only draw a stroke
 previousPosition=newPosition; // update to the new position.
 ```
 2. What are the inputs to the drawing function? <br />
+inputs are color, x, y, and clear operation signals <br />
 3. How can the screen be cleared? <br />
+by sending string "rst" from the arduino and calling ctx.clear()
 
 ## Part B. Etch a Sketch
 1. Describe which sensors you are using as inputs and why. <br />
