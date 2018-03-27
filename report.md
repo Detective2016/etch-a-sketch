@@ -164,8 +164,8 @@ var firstMessage=true;    // What the first message, to start on the first value
 
       //TODO: Map the incoming 10-bit numbers to the height and width of the screen.
       // See https://github.com/soulwire/sketch.js/wiki/API for sketch references
-      newPosition[0] = map(newPosition[0], 0, 1023, 0, ctx.width);
-      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.height);
+      newPosition[0] = map(newPosition[0], 0, 1023, 0, ctx.width*.6);
+      newPosition[1] = map(newPosition[1], 0, 1023, 0, ctx.height*.6);
 
       if(firstMessage){ // if its the first message store that value as previous
         firstMessage=false;
@@ -186,6 +186,46 @@ var firstMessage=true;    // What the first message, to start on the first value
     $('select[name="colorpicker"]').on('change', function() {
       COLOUR = $('select[name="colorpicker"]').val();
     });
+```
+HTML: <br />
+```html
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="sketch.min.js" type="text/javascript"></script>
+    <link href="style.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+    <title>YM Lab6 Etch A Sketch</title>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>My Sketch</h1>
+        <p>color selection:</p>
+        <select name="colorpicker">
+        <option value="#000000">Black</option>
+        <option value="#7bd148">Green</option>
+        <option value="#5484ed">Bold blue</option>
+        <option value="#a4bdfc">Blue</option>
+        <option value="#46d6db">Turquoise</option>
+        <option value="#7ae7bf">Light green</option>
+        <option value="#51b749">Bold green</option>
+        <option value="#fbd75b">Yellow</option>
+        <option value="#ffb878">Orange</option>
+        <option value="#ff887c">Red</option>
+        <option value="#dc2127">Bold red</option>
+        <option value="#dbadff">Purple</option>
+        <option value="#e1e1e1">Gray</option>
+      </select>
+    </div>
+    <div id="container"></div>
+    <div id="footer">
+      <h2>etch-a-sketch</h2>
+    </div>
+    <script src ="client.js" type="text/javascript"> </script>
+  </body>
+
+</html>
 ```
 Styles: <br />
 ```css
