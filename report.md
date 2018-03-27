@@ -2,6 +2,13 @@
 
 ## Part A. Node Canvas
 1. Where in this code does the drawing occur? <br />
+drawing occurs in client.js where the new cursor positions are read and updated:
+```javascript
+ctx.moveTo( previousPosition[0], previousPosition[1] ); // from
+ctx.lineTo( newPosition[0],  newPosition[1]); // to
+ctx.stroke(); // and only draw a stroke
+previousPosition=newPosition; // update to the new position.
+```
 2. What are the inputs to the drawing function? <br />
 3. How can the screen be cleared? <br />
 
